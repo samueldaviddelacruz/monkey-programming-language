@@ -11,7 +11,7 @@ func TestNextToken(t *testing.T) {
 	let add = fn(x,y) {
 		x + y
 	};
-	let result = add(five,then)
+	let result = add(five,then);
 	`
 	tests := []struct {
 		expectedType    token.TokenType
