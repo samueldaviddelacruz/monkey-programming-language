@@ -105,10 +105,9 @@ func (p *Parser) parseInfixExpression(left ast.Expression) ast.Expression {
 	precedence := p.curPrecedence()
 
 	p.nextToken()
-	fmt.Printf("curPrecedence: %d \n", p.curPrecedence())
-	fmt.Printf("peekPrecedence: %d \n", p.peekPrecedence())
+
 	expression.Rigth = p.parseExpression(precedence)
-	//fmt.Println(expression.Rigth.String())
+
 	return expression
 }
 
@@ -204,14 +203,9 @@ func (p *Parser) parseExpression(precedence int) ast.Expression {
 		if infix == nil {
 			return leftExp
 		}
-		fmt.Printf("curToken: %s \n", p.curToken.Literal)
-		//fmt.Println(p.curPrecedence())
-		fmt.Printf("curPrecedence: %d \n", p.curPrecedence())
+
 		p.nextToken()
-		fmt.Printf("curToken: %s \n", p.curToken.Literal)
-		//fmt.Println(p.curPrecedence())
-		fmt.Printf("curPrecedence: %d \n", p.curPrecedence())
-		//fmt.Println(p.peekToken.Literal)
+
 		leftExp = infix(leftExp)
 	}
 
