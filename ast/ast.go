@@ -70,7 +70,7 @@ func (b *Boolean) String() string       { return b.Token.Literal }
 type PrefixExpression struct {
 	Token    token.Token // The prefix token, e.g. !
 	Operator string
-	Rigth    Expression
+	Right    Expression
 }
 
 func (pe *PrefixExpression) expressionNode()      {}
@@ -80,7 +80,7 @@ func (pe *PrefixExpression) String() string {
 
 	out.WriteString("(")
 	out.WriteString(pe.Operator)
-	out.WriteString(pe.Rigth.String())
+	out.WriteString(pe.Right.String())
 	out.WriteString(")")
 	return out.String()
 }
@@ -89,7 +89,7 @@ type InfixExpression struct {
 	Token    token.Token // the infix token, e.g +
 	Left     Expression
 	Operator string
-	Rigth    Expression
+	Right    Expression
 }
 
 func (ie *InfixExpression) expressionNode()      {}
@@ -99,7 +99,7 @@ func (ie *InfixExpression) String() string {
 	out.WriteString("(")
 	out.WriteString(ie.Left.String())
 	out.WriteString(" " + ie.Operator + " ")
-	out.WriteString(ie.Rigth.String())
+	out.WriteString(ie.Right.String())
 	out.WriteString(")")
 	return out.String()
 }
