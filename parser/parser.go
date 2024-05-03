@@ -101,7 +101,7 @@ func (p *Parser) parsePrefixExpression() ast.Expression {
 		Operator: p.curToken.Literal,
 	}
 	p.nextToken()
-	expression.Rigth = p.parseExpression(PREFIX)
+	expression.Right = p.parseExpression(PREFIX)
 
 	return expression
 }
@@ -116,7 +116,7 @@ func (p *Parser) parseInfixExpression(left ast.Expression) ast.Expression {
 
 	p.nextToken()
 
-	expression.Rigth = p.parseExpression(precedence)
+	expression.Right = p.parseExpression(precedence)
 
 	return expression
 }
