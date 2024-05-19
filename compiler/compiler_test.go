@@ -71,6 +71,7 @@ func concatInstructions(s []code.Instructions) code.Instructions {
 	return out
 }
 func testConstants(t *testing.T, expected []interface{}, actual []object.Object) error {
+	t.Helper()
 	if len(expected) != len(actual) {
 		return fmt.Errorf("wrong instructions length.\n want=%q\ngot=%q", len(actual), len(expected))
 	}
