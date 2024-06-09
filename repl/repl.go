@@ -4,17 +4,23 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"monkey/evaluator"
+	"monkey/compiler"
 	"monkey/lexer"
 	"monkey/object"
 	"monkey/parser"
+	"monkey/vm"
 )
 
 const PROMPT = ">> "
 
 func Start(in io.Reader, out io.Writer) {
 	scanner := bufio.NewScanner(in)
-	env := object.NewEnvironment()
+	constants := []object.Object{}
+	globals := make([]object.Object, vm.GlobalsSize)
+	symbolTable := compiler.NewSymbolTable()
+	for i, v := range object.Builtins {
+		symbolTable.DefineBuiltin(i, v.Name)
+	}
 	for {
 		fmt.Fprint(out, PROMPT)
 		scanned := scanner.Scan()
@@ -29,11 +35,23 @@ func Start(in io.Reader, out io.Writer) {
 			printParseErrors(out, p.Errors())
 			continue
 		}
-		evaluated := evaluator.Eval(program, env)
-		if evaluated != nil {
-			fmt.Fprint(out, evaluated.Inspect())
-			fmt.Fprintln(out, "")
+		comp := compiler.NewWithState(symbolTable, constants)
+		err := comp.Compile(program)
+		if err != nil {
+			fmt.Fprintf(out, "Compilation failed:\n %s\n", err)
+			continue
 		}
+		code := comp.Bytecode()
+		constants = code.Constants
+
+		machine := vm.NewWithState(code, globals)
+		err = machine.Run()
+		if err != nil {
+			fmt.Fprintf(out, "Executing bytecode failed:\n %s\n", err)
+			continue
+		}
+		stackTop := machine.LastPoppedStackElem()
+		fmt.Fprintln(out, stackTop.Inspect())
 	}
 
 }

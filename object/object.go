@@ -5,22 +5,25 @@ import (
 	"fmt"
 	"hash/fnv"
 	"monkey/ast"
+	"monkey/code"
 	"strings"
 )
 
 type ObjectType string
 
 const (
-	INTEGER_OBJ      = "INTEGER"
-	BOOLEAN_OBJ      = "BOOLEAN"
-	STRING_OBJ       = "STRING"
-	NULL_OBJ         = "NULL"
-	RETURN_VALUE_OBJ = "RETURN_VALUE"
-	ERROR_OBJ        = "ERROR"
-	FUNCTION_OBJ     = "FUNCTION"
-	BUILTIN_OBJ      = "BUILTIN"
-	ARRAY_OBJ        = "ARRAY"
-	HASH_OBJ         = "HASH"
+	INTEGER_OBJ           = "INTEGER"
+	BOOLEAN_OBJ           = "BOOLEAN"
+	STRING_OBJ            = "STRING"
+	NULL_OBJ              = "NULL"
+	RETURN_VALUE_OBJ      = "RETURN_VALUE"
+	ERROR_OBJ             = "ERROR"
+	FUNCTION_OBJ          = "FUNCTION"
+	BUILTIN_OBJ           = "BUILTIN"
+	ARRAY_OBJ             = "ARRAY"
+	HASH_OBJ              = "HASH"
+	COMPILED_FUNCTION_OBJ = "COMPILED_FUNCTION_OBJ"
+	CLOSURE_OBJ           = "CLOSURE"
 )
 
 type Object interface {
@@ -168,6 +171,31 @@ func (f *Function) Inspect() string {
 }
 func (f *Function) Type() ObjectType {
 	return FUNCTION_OBJ
+}
+
+type CompiledFunction struct {
+	Instructions  code.Instructions
+	NumLocals     int
+	NumParameters int
+}
+
+func (cf *CompiledFunction) Inspect() string {
+	return fmt.Sprintf("CompiledFunction[%p]", cf)
+}
+func (cf *CompiledFunction) Type() ObjectType {
+	return COMPILED_FUNCTION_OBJ
+}
+
+type Closure struct {
+	Fn   *CompiledFunction
+	Free []Object
+}
+
+func (c *Closure) Inspect() string {
+	return fmt.Sprintf("Closure[%p]", c)
+}
+func (c *Closure) Type() ObjectType {
+	return CLOSURE_OBJ
 }
 
 type Error struct {
