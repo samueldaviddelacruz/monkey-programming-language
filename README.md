@@ -1,5 +1,3 @@
-
-
 # Writing an Interpreter and Compiler in Go
 
 Welcome to my project repository! This repository documents my journey through "Writing an Interpreter in Go" and "Writing a Compiler in Go" by Thorsten Ball. Through these projects, I've embarked on a comprehensive exploration of building interpreters, compilers, and virtual machines from scratch using the Go programming language.
